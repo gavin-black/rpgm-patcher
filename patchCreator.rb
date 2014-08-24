@@ -1,3 +1,5 @@
+require 'fileutils'
+
 def readInt()
   $s.read(4).unpack('l')[0]
 end
@@ -35,17 +37,17 @@ def unpackV3
 
     prevPos = $s.pos
     $s.pos = offset
-
     rawDataBytes = $s.read(size).unpack('C*')
-    outData = "" 
-    out = File.new(nameDec, 'wb')
 
-    count = 0
+
+    FileUtils.mkdir_p(File.dirname(nameDec))
+    out = File.new(nameDec, 'wb')
+    outData = "" 
+
     for i in 0..(size-1)
      if i % 4 == 0 && i != 0
-        fkey = (fkey*7 + 3) % 0x7FFFFFFF
+        fkey = (fkey*7 + 3) & 0x7FFFFFFF
         fkeyBytes = intToBytes(fkey)
-        j = 0
       end
       outData = (rawDataBytes[i] ^ fkeyBytes[i%4]).chr
       out.write(outData)
