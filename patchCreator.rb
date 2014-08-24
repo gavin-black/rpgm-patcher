@@ -36,22 +36,20 @@ def unpackV3
     prevPos = $s.pos
     $s.pos = offset
 
-    rawData = $s.read(size)
+    rawDataBytes = $s.read(size).unpack('C*')
     outData = "" 
+    out = File.new(nameDec, 'wb')
 
-    j = 0
+    count = 0
     for i in 0..(size-1)
-      if j == 4
-        fkey = fkey*7 + 3
+     if i % 4 == 0 && i != 0
+        fkey = (fkey*7 + 3) % 0x7FFFFFFF
         fkeyBytes = intToBytes(fkey)
         j = 0
       end
-      outData += (rawData[i].unpack('C')[0] ^ fkeyBytes[j]).chr
-      j += 1
+      outData = (rawDataBytes[i] ^ fkeyBytes[i%4]).chr
+      out.write(outData)
     end
-      
-    out = File.new(nameDec, 'wb')
-    out.write(outData)
     out.close()
 
     $s.pos = prevPos
