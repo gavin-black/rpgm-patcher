@@ -1,5 +1,15 @@
 require 'fileutils'
 
+def forceOverflow(i)
+    if i < -2147483648
+        i & 0xffffffff 
+    elsif i > 2147483647 
+        -(-(i) & 0xffffffff)
+    else  
+        i
+    end    
+end
+
 def readInt()
   $s.read(4).unpack('l')[0]
 end
@@ -46,7 +56,7 @@ def unpackV3
 
     for i in 0..(size-1)
      if i % 4 == 0 && i != 0
-        fkey = (fkey*7 + 3) & 0x7FFFFFFF
+        fkey = forceOverflow(fkey*7 + 3)
         fkeyBytes = intToBytes(fkey)
       end
       outData = (rawDataBytes[i] ^ fkeyBytes[i%4]).chr
