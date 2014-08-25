@@ -68,17 +68,28 @@ def unpackV3
   end 
 end
 
-version = 0
-$s = File.new('Game.rgss3a', 'rb')
+def checkVersion()
+  version = 0
 
-if $s.read(6) == "RGSSAD"
-   $s.read(1)
-   version = $s.read(1).unpack('c')
+  if $s.read(6) == "RGSSAD"
+    $s.read(1)
+    version = $s.read(1).unpack('c')
+  end
+  if version == 0
+    puts "Unsupported"
+    exit
+  end
+  puts "Version is: #{version[0]}"
 end
-if version == 0
-  puts "Unsupported"
-  exit
-end
-puts "Version is: #{version[0]}"
 
-unpackV3()
+if File.file?('Game.rgss3a.patched')
+  puts "TODO: Call extract portion"
+else
+  $s = File.new('Game.rgss3a', 'rb')
+  checkVersion()
+  unpackV3()
+  $s.close
+  FileUtils.mv('Game.rgss3a', 'Game.rgss3a.patched')
+end
+
+
