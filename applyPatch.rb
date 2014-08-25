@@ -1,3 +1,4 @@
+# Extracts encrypted rpgmaker archives and applies patches
 require 'fileutils'
 
 def forceOverflow(i)
@@ -91,5 +92,3 @@ else
   $s.close
   FileUtils.mv('Game.rgss3a', 'Game.rgss3a.patched')
 end
-
-
