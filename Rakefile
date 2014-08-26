@@ -25,7 +25,5 @@ end
 
 desc "Create the tool as an executable"
 task :exe do
-  sh %{ ocra --windows --icon foo.ico applyPatch.rb}
-  sh %{ ocra --windows --icon foo.ico createPatch.rb}
-  # TODO: Merge the executables into one
+  sh %{ ocra createPatch.rb --windows C:\\Ruby193\\lib\\tcltk\\ --no-autoload --add-all-core --icon shanghai.ico }
 end
