@@ -35,7 +35,7 @@ end
 
 window = TkRoot.new() do
   title "Patch tool"
-  geometry "360x300"
+  geometry "360x247"
 end
 
 window['resizable'] = false, false
@@ -98,23 +98,34 @@ if isOrig
 end
 
 totalBar = Tk::Tile::Progressbar.new(window) do
-  place('height' => 25, 'width' => 205, 'x' => 45, 'y' => 10 + yOffs)
+  place('height' => 25, 'width' => 300, 'x' => 50, 'y' => 10 + yOffs)
   maximum 100
   variable pTotal
 end
 
 fileBar = Tk::Tile::Progressbar.new(window) do
-  place('height' => 25, 'width' => 205, 'x' => 45, 'y' => 50 + yOffs)
+  place('height' => 25, 'width' => 300, 'x' => 50, 'y' => 50 + yOffs)
   maximum 100
   variable pFile
 end
+
+$statusVar = TkVariable.new
+TkLabel.new(window) do
+  textvariable $statusVar
+  borderwidth 3
+  relief  "groove"
+  place('height' => 25, 'width' => 362, 'x' => -1, 'y' => 85 + yOffs)
+  justify 'left'
+end
+
+$statusVar.value = "Status"
 
 pTotal.value = 44
 pFile.value = 26
 
 Tk::Tile::Separator.new(window) do
    orient 'horizontal'
-   place('width' => 240, 'x' => 5, 'y' => 140)
+   place('width' => 350, 'x' => 5, 'y' => 140)
 end
 
 TkLabel.new(window) do
@@ -128,6 +139,7 @@ TkLabel.new(window) do
   justify "left"
   place('width' => 40, 'x' => 5, 'y' => 50 + yOffs)
 end
+
 
 =begin
 $resultsVar = TkVariable.new
