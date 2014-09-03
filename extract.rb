@@ -83,12 +83,17 @@ def checkVersion()
   puts "Version is: #{version[0]}"
 end
 
-if File.file?('Game.rgss3a.patched')
-  puts "TODO: Call extract portion"
-else
-  $s = File.new('Game.rgss3a', 'rb')
-  checkVersion()
-  unpackV3()
-  $s.close
-  FileUtils.mv('Game.rgss3a', 'Game.rgss3a.patched')
+def extract(dir)
+  puts dir
+  if File.file?(dir + '/Game.rgss3a.patched')
+    puts "TODO: Call extract portion"
+  else
+    $s = File.new(dir + '/Game.rgss3a', 'rb')
+    puts (dir + '/Game.rgss3a')
+    puts $s
+    checkVersion()
+    unpackV3()
+    $s.close
+    FileUtils.mv('Game.rgss3a', 'Game.rgss3a.patched')
+  end
 end

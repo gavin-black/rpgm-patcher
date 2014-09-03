@@ -7,9 +7,9 @@ end
 
 desc "Clean remove any testing files"
 task :clean do
-  FileUtils.mv('Game.rgss3a.patched', 'Game.rgss3a')
   FileUtils.rm_rf('Data/')
   FileUtils.rm_rf('Graphics/')
+  FileUtils.mv('Game.rgss3a.patched', 'Game.rgss3a')
 end
 
 desc "Run patch applying tool"

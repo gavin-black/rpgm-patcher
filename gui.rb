@@ -1,7 +1,7 @@
 require 'tk'
-
-#require 'tkextlib/bwidget'
 require 'tkextlib/tile' 
+load './extract.rb'
+
 
 def updatedLoc
   if $origLoc.value.length > 0
@@ -15,21 +15,17 @@ def updatedLoc
     $extractButton.state = "disabled"
     $patchButton.state = "disabled"
   end
-  
- 
-  
+end
+
+def callExtract(dir)
+  Thread.new {
+    puts "THREAD: #{dir}"
+    extract dir
+  }
 end
 
 def browse(loc)
-     
   loc.value = Tk.chooseDirectory
-  #Thread.new {
-  #  puts "HELLO"
-  #  $origLoc = Tk.getOpenFile
-  #  $btn_OK.state = "disabled"
-  #  $btn_OK.state = "normal"
-  #  puts "WORLD"
-  #}
 end
 
 
@@ -49,6 +45,7 @@ if isOrig
   yOffs = 140
 
   $origLoc = TkVariable.new
+  $origLoc.trace('w', proc{ updatedLoc })
   TkButton.new(window) do
     place('height' => 25, 'width' => 80, 'x' => 275, 'y' => 10 )
     text "Browse..."
@@ -89,6 +86,7 @@ if isOrig
     place('height' => 35, 'width' => 130, 'x' => 33, 'y' => 90 )
     text "Extract"
     state "disabled"
+    command (proc {callExtract $origLoc.value})
   end
   $patchButton = TkButton.new(window) do
     place('height' => 35, 'width' => 130, 'x' => 197, 'y' => 90 )
@@ -139,18 +137,5 @@ TkLabel.new(window) do
   justify "left"
   place('width' => 40, 'x' => 5, 'y' => 50 + yOffs)
 end
-
-
-=begin
-$resultsVar = TkVariable.new
-fileLabel = TkLabel.new(window) do
-  #textvariable $resultsVar
-  text "HEL"
-  pack("side" => "right",  "padx"=> "50", "pady"=> "50")
-end
-
-$resultsVar.value = 'New value to display'
-
-=end
-
+puts $KCODE
 Tk.mainloop
