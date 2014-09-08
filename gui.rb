@@ -2,6 +2,19 @@ require 'tk'
 require 'tkextlib/tile' 
 load './extract.rb'
 
+def updateStatus(title, fPercent, tPercent)
+  if title != nil
+    $statusVar.value = title
+  end
+
+  if fPercent != nil
+    $pFile.value = fPercent
+  end
+
+  if tPercent != nil
+    $pTotal.value = tPercent
+  end
+end
 
 def updatedLoc
   if $origLoc.value.length > 0
@@ -17,15 +30,22 @@ def updatedLoc
   end
 end
 
+def extractDone
+  updatedLoc
+end
+
 def callExtract(dir)
   Thread.new {
+    $extractButton.state = "disabled"
+    $patchButton.state = "disabled"
     puts "THREAD: #{dir}"
     extract dir
   }
 end
 
 def browse(loc)
-  loc.value = Tk.chooseDirectory
+  lv = Tk.chooseDirectory.force_encoding('SHIFT_JIS')
+  loc.value = lv.encode('SHIFT_JIS')
 end
 
 
@@ -36,8 +56,8 @@ end
 
 window['resizable'] = false, false
 
-pTotal = TkVariable.new
-pFile = TkVariable.new
+$pTotal = TkVariable.new
+$pFile = TkVariable.new
 
 isOrig = true 
 if isOrig
@@ -98,28 +118,24 @@ end
 totalBar = Tk::Tile::Progressbar.new(window) do
   place('height' => 25, 'width' => 300, 'x' => 50, 'y' => 10 + yOffs)
   maximum 100
-  variable pTotal
+  variable $pTotal
 end
 
 fileBar = Tk::Tile::Progressbar.new(window) do
   place('height' => 25, 'width' => 300, 'x' => 50, 'y' => 50 + yOffs)
   maximum 100
-  variable pFile
+  variable $pFile
 end
 
 $statusVar = TkVariable.new
-TkLabel.new(window) do
+x = TkLabel.new(window) do
   textvariable $statusVar
   borderwidth 3
   relief  "groove"
   place('height' => 25, 'width' => 362, 'x' => -1, 'y' => 85 + yOffs)
   justify 'left'
 end
-
 $statusVar.value = "Status"
-
-pTotal.value = 44
-pFile.value = 26
 
 Tk::Tile::Separator.new(window) do
    orient 'horizontal'
@@ -137,5 +153,4 @@ TkLabel.new(window) do
   justify "left"
   place('width' => 40, 'x' => 5, 'y' => 50 + yOffs)
 end
-puts $KCODE
 Tk.mainloop
