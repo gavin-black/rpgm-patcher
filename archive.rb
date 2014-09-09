@@ -1,7 +1,7 @@
-def archive(file, arc)
+def archive(file, name, arc)
   append = File.read(file)
-  arc.write([file.length].pack('N'))
-  arc.puts file
+  arc.write([name.length].pack('N'))
+  arc.puts name
   arc.write([append.length].pack('N'))
   arc.puts append
 end
@@ -32,6 +32,6 @@ end
 #archive("tes", s)
 #s.close  
 
-#y = File.new('archiver', 'rb')
+#y = File.new('archived', 'rb')
 #extract(y)
 #y.close
