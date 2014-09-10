@@ -1,6 +1,7 @@
 require 'tk'
 require 'tkextlib/tile' 
 load './extract.rb'
+load './createPatch.rb'
 
 def updateStatus(title, fPercent, tPercent)
   if title != nil
@@ -32,6 +33,13 @@ end
 
 def extractDone
   updatedLoc
+end
+
+def callPatch
+  Thread.new {
+    ($origLoc.value, $patchLoc.value)
+    
+  }
 end
 
 def callExtract(dir)
@@ -112,6 +120,7 @@ if isOrig
     place('height' => 35, 'width' => 130, 'x' => 197, 'y' => 90 )
     text "Create Patch"
     state "disabled"
+    command (proc {callPatch})
   end
 end
 

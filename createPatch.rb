@@ -6,10 +6,10 @@ require 'Digest'
 require 'fileutils'
 load './archive.rb'
 
-def createPatch
+def createPatch(orig, patched)
   ignoreList = ["Save/", "Game.rgss3a.patched"]
-  orig = '../orig/'
-  patched = '../patched/'
+  #orig = '../orig/'
+  #patched = '../patched/'
   pSize = patched.length
 
   s = makeExe
