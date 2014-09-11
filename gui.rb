@@ -37,7 +37,7 @@ end
 
 def callPatch
   Thread.new {
-    ($origLoc.value, $patchLoc.value)
+    createPatch($origLoc.value, $patchLoc.value)
     
   }
 end

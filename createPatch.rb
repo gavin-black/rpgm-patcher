@@ -35,4 +35,4 @@ def makeExe
   s
 end
 
-createPatch
+#createPatch
